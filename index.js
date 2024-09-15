@@ -1,5 +1,5 @@
-const BookModel = require('./models/Book-model');  ///////////////////<<<<<<<<<<<<<<<<<<
-const arrayO = require("./booksArray");  ///////////////////<<<<<<<<<<<<<<<<<<
+const BookModel = require("./models/Book-model"); ///////////////////<<<<<<<<<<<<<<<<<<
+const arrayO = require("./booksArray"); ///////////////////<<<<<<<<<<<<<<<<<<
 const express = require("express");
 const cors = require("cors");
 const booksRouter = require("./routes/books-routes");
@@ -25,15 +25,19 @@ mongoose
     console.log("error in database connection : ", error);
   });
 // ----------------------------
-const corsOptions = {
-  origin: 'http://localhost:3000',
-  optionsSuccessStatus: 200 // Some legacy browsers choke on 204
-};
-
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://your-vercel-backend-url.vercel.app",
+    ], // Specify allowed origins
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Specify allowed HTTP methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
+    credentials: true, // If you need to handle cookies or authentication
+  })
+);
 app.use(express.json());
 app.use("/admin", adminRouter);
 app.use("/user", userRouter);
 app.use("/book", booksRouter);
-app.use("/",sessionRouter);
-
+app.use("/", sessionRouter);
