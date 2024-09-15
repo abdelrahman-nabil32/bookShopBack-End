@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const UserModel = require('../models/User-model');
 const passwordValidator = require('password-validator');
 const validator = require('validator');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
