@@ -1,6 +1,7 @@
 const BookModel = require('./models/Book-model');  ///////////////////<<<<<<<<<<<<<<<<<<
 const arrayO = require("./booksArray");  ///////////////////<<<<<<<<<<<<<<<<<<
 const express = require("express");
+const cors = require("cors");
 const booksRouter = require("./routes/books-routes");
 const adminRouter = require("./routes/admins-routes");
 const userRouter = require("./routes/user-routes");
@@ -24,7 +25,12 @@ mongoose
     console.log("error in database connection : ", error);
   });
 // ----------------------------
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200 // Some legacy browsers choke on 204
+};
 
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/admin", adminRouter);
 app.use("/user", userRouter);
