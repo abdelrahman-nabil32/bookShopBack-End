@@ -24,8 +24,26 @@ const registration = async (req, res) => {
     .not()
     .spaces();
   //--------------------------------------
-  const { fullName, username, email, password, phoneNumber, address, role } =
+  let { fullName, username, email, password, phoneNumber, address, role } =
     req.body;
+
+  if (
+    typeof fullName !== "undefined" &&
+    typeof username !== "undefined" &&
+    typeof email !== "undefined" &&
+    typeof password !== "undefined" &&
+    typeof phoneNumber !== "undefined" &&
+    typeof address !== "undefined" &&
+    typeof role !== "undefined"
+  ) {
+    fullName = fullName.trim();
+    username = username.trim();
+    email = email.trim();
+    password = password.trim();
+    phoneNumber = phoneNumber.trim();
+    address = address.trim();
+    role = role.trim();
+  }
   // validate the new data of the user before store it
   if (
     !fullName ||
@@ -94,7 +112,11 @@ const registration = async (req, res) => {
   }
 };
 const login = async (req, res) => {
-  const { email, password } = req.body;
+  let { email, password } = req.body;
+  if (typeof password !== "undefined" && typeof email !== "undefined") {
+    email = email.trim();
+    password = password.trim();
+  }
   if (!email || !password) {
     return res.status(400).json({
       status: "FAIL",
@@ -152,7 +174,9 @@ const login = async (req, res) => {
   }
 };
 const logout = async (req, res) => {
-  const { refreshToken } = req.body;
+  let { refreshToken } = req.body;
+
+  if (typeof refreshToken !== "undefined") refreshToken = refreshToken.trim();
   if (!refreshToken) {
     return res
       .status(400)
@@ -178,6 +202,7 @@ const logout = async (req, res) => {
 const accessTokenValidation = (req, res, next) => {
   let accessToken = req.headers["authorization"];
   if (accessToken) {
+    accessToken = accessToken.trim();
     accessToken = accessToken.split(" ")[1];
   }
   if (!accessToken)
@@ -205,7 +230,10 @@ const accessTokenValidation = (req, res, next) => {
   }
 };
 const getNewAccessTokenByRefreshToken = async (req, res) => {
-  const { refreshToken } = req.body;
+  let { refreshToken } = req.body;
+  if (typeof refreshToken !== "undefined") {
+    refreshToken = refreshToken.trim();
+  }
   if (!refreshToken) {
     return res
       .status(403)
